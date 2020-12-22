@@ -25,7 +25,7 @@ char *readin(const char *name)
 	text = malloc(sizeof(char) * size);
 	if (text == NULL)
 	{
-		fprintf(stderr, "Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed\n");
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
@@ -53,7 +53,7 @@ char **readtext(char *text)
 	lines = malloc(sizeof(char *) * (ln + 1));
 	if (lines == NULL)
 	{
-		fprintf(stderr, "Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed\n");
 		free(lines);
 		exit(EXIT_FAILURE);
 	}
@@ -72,10 +72,12 @@ char **readtext(char *text)
  * @line: line to read
  * @ln: line number
  * @head: head of the stack
+ * @free1: element to free
+ * @free2: element to free
  * Return: comand and argument
  */
 
-char *rdline(char *line, unsigned int ln, stack_t **head)
+char *rdline(char *line, unsigned int ln, stack_t **head, char *free1, char **free2)
 {
 	char *command, *num;
 	int a;
@@ -90,15 +92,18 @@ char *rdline(char *line, unsigned int ln, stack_t **head)
 		num = strtok(NULL, " ");
 		if (num == NULL)
 		{
-			fprintf(stderr, "L%d: usage: push integer", ln);
+			fprintf(stderr, "L%d: usage: push integer\n", ln);
+			freestack(head);
+			free(free1), free(free2);
 			exit(EXIT_FAILURE);
 		}
 		for (a = 0; num[a] != '\0'; a++)
 		{
 			if (num[a] < '0' || num[a] > '9')
 			{
-				fprintf(stderr, "L%d: usage: push integer", ln);
+				fprintf(stderr, "L%d: usage: push integer\n", ln);
 				freestack(head);
+				free(free1), free(free2);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -136,7 +141,7 @@ int main(int argc, char **argv)
 	lines = readtext(text);
 	for (idx = 0; lines[idx] != NULL; idx++)
 	{
-		command = rdline(lines[idx], idx + 1, &head);
+		command = rdline(lines[idx], idx + 1, &head, text, lines);
 		for (a = 0; instruction[a].opcode != NULL; a++)
 		{
 			if (strcmp(command, instruction[a].opcode) == 0)
