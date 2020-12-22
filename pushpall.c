@@ -1,5 +1,7 @@
 #include "monty.h"
 
+int arg = 0;
+
 /**
  * push - push an element to the stack
  *
@@ -71,22 +73,4 @@ void freestack(stack_t **head)
 			free(temp2);
 		}
 	}
-}
-
-/**
- * freetext - frees the text
- *
- * @lines: array of lines of the text
- * Return: void
- */
-
-void freetext(char **lines)
-{
-	int a;
-
-	for (a = 0; lines[a] != NULL; a++)
-	{
-		free(lines[a]);
-	}
-	free(lines);
 }

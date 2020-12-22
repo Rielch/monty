@@ -1,7 +1,5 @@
 #include "monty.h"
 
-int arg = 0;
-
 /**
  * readin - read the input from the file
  *
@@ -9,10 +7,10 @@ int arg = 0;
  * Return: array of strings with opcodes and arguments
  */
 
-char **readin(const char *name)
+char *readin(const char *name)
 {
-	int fd, a, ln = 0;
-	char **lines, *text, *temp;
+	int fd;
+	char *text;
 	unsigned int size;
 	struct stat st;
 
@@ -23,7 +21,7 @@ char **readin(const char *name)
 		exit(EXIT_FAILURE);
 	}
 	fstat(fd, &st);
-	size = st.st_size;
+	size = st.st_size + 1;
 	text = malloc(sizeof(char) * size);
 	if (text == NULL)
 	{
@@ -32,30 +30,39 @@ char **readin(const char *name)
 		exit(EXIT_FAILURE);
 	}
 	read(fd, text, size);
+	text[size - 1] = '\0';
+	close(fd);
+	return (text);
+}
+
+/**
+ * readtext - reads the text and separate it into lines
+ *
+ * @text: text to separate
+ * Return: Array of strings
+ */
+
+char **readtext(char *text)
+{
+	int a, ln = 0;
+	char **lines;
+
 	for (a = 0; text[a] != '\0'; a++)
-	{
 		if (text[a] == '\n')
-		{
 			ln++;
-		}
-	}
 	lines = malloc(sizeof(char *) * (ln + 1));
 	if (lines == NULL)
 	{
 		dprintf(2, "Error: malloc failed");
 		free(lines);
-		close(fd);
 		exit(EXIT_FAILURE);
 	}
-	temp = strtok(text, "\n");
-	lines[0] = temp;
+	lines[0] = strtok(text, "\n");
 	for (a = 1; a < ln; a++)
 	{
-		temp = strtok(NULL, "\n");
-		lines[a] = temp;
+		lines[a] = strtok(NULL, "\n");
 	}
 	lines[a] = NULL;
-	close(fd);
 	return (lines);
 }
 
@@ -63,6 +70,8 @@ char **readin(const char *name)
  * rdline - reads te command from the line
  *
  * @line: line to read
+ * @ln: line number
+ * @head: head of the stack
  * Return: comand and argument
  */
 
@@ -108,7 +117,7 @@ char *rdline(char *line, unsigned int ln, stack_t **head)
 
 int main(int argc, char **argv)
 {
-	char **lines, *command;
+	char **lines, *text, *command;
 	stack_t *head = NULL;
 	unsigned int idx, a;
 	instruction_t instruction[] = {
@@ -123,7 +132,8 @@ int main(int argc, char **argv)
 		dprintf(2, "USAGE: monty file");
 		exit(EXIT_FAILURE);
 	}
-	lines = readin(argv[1]);
+	text = readin(argv[1]);
+	lines = readtext(text);
 	for (idx = 0; lines[idx] != NULL; idx++)
 	{
 		command = rdline(lines[idx], idx + 1, &head);
@@ -137,11 +147,14 @@ int main(int argc, char **argv)
 		}
 		if (instruction[a].opcode == NULL)
 		{
-	dprintf(2, "L%d: unknown instruction %s\n", idx + 1, command);
-	freetext(lines);
-	freestack(&head);
-	exit(EXIT_FAILURE);
+			dprintf(2, "L%d: unknown instruction %s\n", idx + 1, command);
+			free(lines);
+			free(text);
+			freestack(&head);
+			exit(EXIT_FAILURE);
 		}
 	}
+	free(text), free(lines);
+	freestack(&head);
 	return (0);
 }
