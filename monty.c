@@ -72,12 +72,12 @@ char **readtext(char *text)
  * @line: line to read
  * @ln: line number
  * @head: head of the stack
- * @free1: element to free
- * @free2: element to free
+ * @f1: element to free
+ * @f2: element to free
  * Return: comand and argument
  */
 
-char *rdline(char *line, unsigned int ln, stack_t **head, char *free1, char **free2)
+char *rdline(char *line, unsigned int ln, stack_t **head, char *f1, char **f2)
 {
 	char *command, *num;
 	int a;
@@ -94,7 +94,7 @@ char *rdline(char *line, unsigned int ln, stack_t **head, char *free1, char **fr
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", ln);
 			freestack(head);
-			free(free1), free(free2);
+			free(f1), free(f2);
 			exit(EXIT_FAILURE);
 		}
 		for (a = 0; num[a] != '\0'; a++)
@@ -103,7 +103,7 @@ char *rdline(char *line, unsigned int ln, stack_t **head, char *free1, char **fr
 			{
 				fprintf(stderr, "L%d: usage: push integer\n", ln);
 				freestack(head);
-				free(free1), free(free2);
+				free(f1), free(f2);
 				exit(EXIT_FAILURE);
 			}
 		}
