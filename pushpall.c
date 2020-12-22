@@ -5,24 +5,26 @@
  *
  * @head: head of the stack
  * @line: actual line
- * @n: integer argument
  * Return: void
  */
 
-void push(stack_t **head, unsigned int line, int n)
+void push(stack_t **head, __attribute__((unused)) unsigned int line)
 {
-	stack_t *new;
+	stack_t *new, *temp = *head;
 
 	new = malloc(sizeof(stack_t));
 	if (new == NULL)
 	{
-		fprintf(2, "Error: malloc failed\n");
+		dprintf(2, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
-	new->n = n;
-	new->next = *head;
+	new->n = arg;
+	new->next = temp;
 	new->prev = NULL;
-	*head->prev = new;
+	if (temp != NULL)
+	{
+		temp->prev = new;
+	}
 	*head = new;
 }
 
@@ -32,3 +34,59 @@ void push(stack_t **head, unsigned int line, int n)
  *
  * @head: head of the stack
  * @line: actual line
+ * Return: void
+ */
+
+void pall(stack_t **head, __attribute__((unused)) unsigned int line)
+{
+	stack_t *temp = *head;
+
+	if (*head != NULL)
+	{
+		while (temp != NULL)
+		{
+			printf("%d\n", temp->n);
+			temp = temp->next;
+		}
+	}
+}
+
+/**
+ * freestack - frees the stack
+ *
+ * @head: head of the stack
+ * Return: void
+ */
+
+void freestack(stack_t **head)
+{
+	stack_t *temp = *head, *temp2;
+
+	if (*head != NULL)
+	{
+		while (temp != NULL)
+		{
+			temp2 = temp;
+			temp = temp->next;
+			free(temp2);
+		}
+	}
+}
+
+/**
+ * freetext - frees the text
+ *
+ * @lines: array of lines of the text
+ * Return: void
+ */
+
+void freetext(char **lines)
+{
+	int a;
+
+	for (a = 0; lines[a] != NULL; a++)
+	{
+		free(lines[a]);
+	}
+	free(lines);
+}
