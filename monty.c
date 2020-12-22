@@ -17,7 +17,7 @@ char *readin(const char *name)
 	fd = open(name, O_RDONLY);
 	if (fd < 0)
 	{
-		dprintf(2, "Error: Can't open file %s\n", name);
+		fprintf(stderr, "Error: Can't open file %s\n", name);
 		exit(EXIT_FAILURE);
 	}
 	fstat(fd, &st);
@@ -25,7 +25,7 @@ char *readin(const char *name)
 	text = malloc(sizeof(char) * size);
 	if (text == NULL)
 	{
-		dprintf(2, "Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed");
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
@@ -53,7 +53,7 @@ char **readtext(char *text)
 	lines = malloc(sizeof(char *) * (ln + 1));
 	if (lines == NULL)
 	{
-		dprintf(2, "Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed");
 		free(lines);
 		exit(EXIT_FAILURE);
 	}
@@ -90,14 +90,14 @@ char *rdline(char *line, unsigned int ln, stack_t **head)
 		num = strtok(NULL, " ");
 		if (num == NULL)
 		{
-			dprintf(2, "L%d: usage: push integer", ln);
+			fprintf(stderr, "L%d: usage: push integer", ln);
 			exit(EXIT_FAILURE);
 		}
 		for (a = 0; num[a] != '\0'; a++)
 		{
 			if (num[a] < '0' || num[a] > '9')
 			{
-				dprintf(2, "L%d: usage: push integer", ln);
+				fprintf(stderr, "L%d: usage: push integer", ln);
 				freestack(head);
 				exit(EXIT_FAILURE);
 			}
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		dprintf(2, "USAGE: monty file");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	text = readin(argv[1]);
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 		}
 		if (instruction[a].opcode == NULL)
 		{
-			dprintf(2, "L%d: unknown instruction %s\n", idx + 1, command);
+			fprintf(stderr, "L%d: unknown instruction %s\n", idx + 1, command);
 			free(lines);
 			free(text);
 			freestack(&head);
