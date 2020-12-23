@@ -124,7 +124,7 @@ char *rdline(char *line, unsigned int ln, stack_t **head, char *f1, char **f2)
  * Return: void
  */
 
-void none(__attribute__((unused)) stack_t **head,
+void nop(__attribute__((unused)) stack_t **head,
 	  __attribute__((unused)) unsigned int line)
 {
 }
@@ -145,7 +145,8 @@ int main(int argc, char **argv)
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
-		{" ", none},
+		{" ", nop},
+		{"nop", nop}
 		{"pint", pint},
 		{"pop", pop},
 		{"swap", swap},
