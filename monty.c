@@ -148,6 +148,7 @@ int main(int argc, char **argv)
 		{" ", none},
 		{"pint", pint},
 		{"pop", pop},
+		{"swap", swap},
 		{NULL, NULL}
 	};
 
