@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 		{"push", push},
 		{"pall", pall},
 		{" ", nop},
-		{"nop", nop}
+		{"nop", nop},
 		{"pint", pint},
 		{"pop", pop},
 		{"swap", swap},
