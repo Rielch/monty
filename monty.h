@@ -45,6 +45,11 @@ void pint(stack_t **head, unsigned int line);
 void pop(stack_t **head, unsigned int line);
 void swap(stack_t **head, unsigned int line);
 void addm(stack_t **head, unsigned int line);
+void mulm(stack_t **head, unsigned int line);
+void subm(stack_t **head, unsigned int line);
+void modm(stack_t **head, unsigned int line);
+void divm(stack_t **head, unsigned int line);
+void pchar(stack_t **head, unsigned int line);
 void freestack(stack_t **head);
 
 #endif /* MONTY_H */

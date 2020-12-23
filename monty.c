@@ -151,6 +151,11 @@ int main(int argc, char **argv)
 		{"pop", pop},
 		{"swap", swap},
 		{"add", addm},
+		{"sub", subm},
+		{"mul", mulm},
+		{"div", divm},
+		{"mod", modm},
+		{"pchar", pchar},
 		{NULL, NULL}
 	};
 
