@@ -41,6 +41,8 @@ typedef struct instruction_s
 extern int arg;
 void push(stack_t **head, unsigned int line);
 void pall(stack_t **head, unsigned int line);
+void pint(stack_t **head, unsigned int line);
+void pop(stack_t **head, unsigned int line);
 void freestack(stack_t **head);
 
 #endif /* MONTY_H */
