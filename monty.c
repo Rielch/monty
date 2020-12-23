@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 		}
 		if (instruction[a].opcode == NULL)
 		{
-			fprintf(stderr, "L%d: unknown instruction %s\n", idx + 1, command);
+			fprintf(stderr, "L%d: unknown instruction <opcode>\n", idx + 1);
 			free(lines);
 			free(text);
 			freestack(&head);
