@@ -73,3 +73,27 @@ void swap(stack_t **head, unsigned int line)
 	temp2->next = temp;
 	*head = temp2;
 }
+
+/**
+ * addm - add the top two elements of the stack
+ *
+ * @head: head of the stack
+ * @line: line number
+ * Return: void
+ */
+
+void addm(stack_t **head, unsigned int line)
+{
+	stack_t *temp = *head, *temp2;
+
+	if (*head == NULL || temp->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", line);
+		exit(EXIT_FAILURE);
+	}
+	temp2 = temp->next;
+	temp2->n = temp->n + temp2->n;
+	temp2->prev = NULL;
+	free(temp);
+	*head = temp2;
+}
