@@ -48,7 +48,7 @@ char **readtext(char *text)
 	char **lines;
 
 	for (a = 0; text[a] != '\0'; a++)
-		if (text[a] == '\n')
+		if (text[a] == '\n' && text[a + 1] != '\n')
 			ln++;
 	lines = malloc(sizeof(char *) * (ln + 1));
 	if (lines == NULL)
@@ -80,13 +80,17 @@ char **readtext(char *text)
 char *rdline(char *line, unsigned int ln, stack_t **head, char *f1, char **f2)
 {
 	char *command, *num;
-	int a;
+	int a, b = 0;
 
-	command = strtok(line, " ");
+	for (a = 0; line[a] != '\0'; a++)
+		if (line[a] != ' ')
+			b++;
+	if (b == 0)
+		command = " ";
+	else
+		command = strtok(line, " ");
 	if (strcmp(command, "push") != 0)
-	{
 		arg = 0;
-	}
 	else
 	{
 		num = strtok(NULL, " ");
@@ -113,6 +117,19 @@ char *rdline(char *line, unsigned int ln, stack_t **head, char *f1, char **f2)
 }
 
 /**
+ * none - does nothing
+ *
+ * @head: head of the stack
+ * @line: line number
+ * Return: void
+ */
+
+void none(__attribute__((unused)) stack_t **head,
+	  __attribute__((unused)) unsigned int line)
+{
+}
+
+/**
  * main - reads and interprets monty code
  *
  * @argc: ammount of arguments
@@ -128,7 +145,7 @@ int main(int argc, char **argv)
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
-		{"", NULL},
+		{" ", none},
 		{NULL, NULL}
 	};
 
@@ -152,7 +169,7 @@ int main(int argc, char **argv)
 		}
 		if (instruction[a].opcode == NULL)
 		{
-			fprintf(stderr, "L%d: unknown instruction <opcode>\n", idx + 1);
+			fprintf(stderr, "L%d: unknown instruction %s\n", idx + 1, command);
 			free(lines);
 			free(text);
 			freestack(&head);
