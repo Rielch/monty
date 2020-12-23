@@ -37,7 +37,7 @@ void pop(stack_t **head, unsigned int line)
 
 	if (*head == NULL)
 	{
-		fprintf(stderr, "L%d: can't pop an empty stack", line);
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line);
 		exit(EXIT_FAILURE);
 	}
 	temp2 = temp->next;
