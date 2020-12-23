@@ -61,13 +61,10 @@ void swap(stack_t **head, unsigned int line)
 {
 	stack_t *temp = *head, *temp2;
 
-	if (*head == NULL)
+	if (*head == NULL || temp->next == NULL)
 	{
-		if (temp->next == NULL)
-		{
-			fprintf(stderr, "L%d: can't swap, stack too short\n", line);
-			exit(EXIT_FAILURE);
-		}
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line);
+		exit(EXIT_FAILURE);
 	}
 	temp2 = temp->next;
 	temp->next = temp2->next;
